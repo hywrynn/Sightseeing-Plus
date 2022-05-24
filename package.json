@@ -1,0 +1,28 @@
+{
+  "name": "sightseeing-plus",
+  "version": "1.0.0",
+  "description": "Sightseeing Plus is a full-stack web application built from scratch. It is a website which allows users to share and review sightseeing locations, leave comments, post travel journals, and etc.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hywrynn/Sightseeing-Plus.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hywrynn/Sightseeing-Plus/issues"
+  },
+  "homepage": "https://github.com/hywrynn/Sightseeing-Plus#readme",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "ejs": "^3.1.8",
+    "ejs-mate": "^4.0.0",
+    "express": "^4.18.1",
+    "method-override": "^3.0.0",
+    "mongoose": "^6.3.4"
+  }
+}
