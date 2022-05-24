@@ -2,18 +2,21 @@ const express = require('express')
 const router = express.Router()
 const journalController = require('../controllers/journals')
 const catchAsync = require('../utils/catchAsync')
+const {
+    validateJournal
+} = require('../middleware')
 
 
 router.route('/')
     .get(catchAsync(journalController.renderAllJournalsPage))
-    .post(catchAsync(journalController.createNewJournal))
+    .post(validateJournal, catchAsync(journalController.createNewJournal))
 
 router.route('/new')
     .get(journalController.renderNewJournalPage)
 
 router.route('/:id')
     .get(catchAsync(journalController.renderJournalDetail))
-    .put(catchAsync(journalController.updateJournal))
+    .put(catchAsync(validateJournal, journalController.updateJournal))
     .delete(catchAsync(journalController.deleteJournal))
 
 router.route('/:id/edit')
