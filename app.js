@@ -8,6 +8,8 @@ const path = require('path')
 const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 
+const journalRouter = require('./routers/journals')
+
 
 // build mongo atlas connection
 const MONGO_URI = process.env.MONGO_URI
@@ -37,6 +39,9 @@ app.use(methodOverride('_method'))
 
 // set path for public
 app.use(express.static(path.join(__dirname, 'public')))
+
+// routes
+app.use('/journals', journalRouter)
 
 // home page route
 app.get('/', (req, res) => {
