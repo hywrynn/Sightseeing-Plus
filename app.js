@@ -9,6 +9,7 @@ const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 
 const journalRouter = require('./routers/journals')
+const ExpressError = require('./utils/ExpressError')
 
 
 // build mongo atlas connection
@@ -46,6 +47,24 @@ app.use('/journals', journalRouter)
 // home page route
 app.get('/', (req, res) => {
     res.render('home')
+})
+
+// page not found
+app.all('*', (req, res, next) => {
+    next(new ExpressError('Page Not Found', 404))
+})
+
+// handle errors
+app.use((err, req, res, next) => {
+    const {
+        statusCode = 500
+    } = err;
+    if (!err.message) {
+        err.message = 'Sorry, something went wrong :('
+    }
+    res.status(statusCode).render('error', {
+        err
+    })
 })
 
 // app listen

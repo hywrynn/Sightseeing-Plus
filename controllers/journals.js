@@ -8,7 +8,7 @@ const renderAllJournalsPage = async (req, res) => {
     })
 }
 
-const renderNewJournalPage = async (req, res) => {
+const renderNewJournalPage = (req, res) => {
     res.render('journals/new')
 }
 
