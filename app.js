@@ -7,6 +7,7 @@ const ejsMate = require('ejs-mate')
 const path = require('path')
 const mongoose = require('mongoose')
 const methodOverride = require('method-override')
+const session = require('express-session')
 
 const journalRouter = require('./routers/journals')
 const reviewRouter = require('./routers/reviews')
@@ -41,6 +42,19 @@ app.use(methodOverride('_method'))
 
 // set path for public
 app.use(express.static(path.join(__dirname, 'public')))
+
+// sessions
+const sessionConfig = {
+    secret: 'ASecretToken',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    }
+}
+app.use(session(sessionConfig))
 
 // routes
 app.use('/journals', journalRouter)
