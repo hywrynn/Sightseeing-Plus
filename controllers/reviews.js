@@ -8,6 +8,7 @@ const createNewReview = async (req, res) => {
     journal.reviews.push(review)
     await review.save()
     await journal.save()
+    req.flash('success', 'Review added successfully!')
     res.redirect(`/journals/${journal._id}`)
 }
 
@@ -22,6 +23,7 @@ const deleteReview = async (req, res) => {
         }
     })
     await Review.findByIdAndDelete(reviewId)
+    req.flash('success', 'Review deleted successfully!')
     res.redirect(`/journals/${journalId}`)
 }
 

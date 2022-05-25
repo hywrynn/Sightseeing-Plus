@@ -1,7 +1,4 @@
 const mongoose = require('mongoose')
-const {
-    journalSchema
-} = require('../schemas')
 const Schema = mongoose.Schema
 const Review = require('./review')
 

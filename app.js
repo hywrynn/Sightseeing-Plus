@@ -8,6 +8,7 @@ const path = require('path')
 const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 const session = require('express-session')
+const flash = require('connect-flash')
 
 const journalRouter = require('./routers/journals')
 const reviewRouter = require('./routers/reviews')
@@ -55,6 +56,14 @@ const sessionConfig = {
     }
 }
 app.use(session(sessionConfig))
+
+// flash messages
+app.use(flash())
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success')
+    res.locals.error = req.flash('error')
+    next()
+})
 
 // routes
 app.use('/journals', journalRouter)

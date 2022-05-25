@@ -16,7 +16,7 @@ router.route('/new')
 
 router.route('/:id')
     .get(catchAsync(journalController.renderJournalDetail))
-    .put(catchAsync(validateJournal, journalController.updateJournal))
+    .put(validateJournal, catchAsync(journalController.updateJournal))
     .delete(catchAsync(journalController.deleteJournal))
 
 router.route('/:id/edit')
