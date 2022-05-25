@@ -3,23 +3,24 @@ const router = express.Router()
 const journalController = require('../controllers/journals')
 const catchAsync = require('../utils/catchAsync')
 const {
-    validateJournal
+    validateJournal,
+    isLoggedIn
 } = require('../middleware')
 
 
 router.route('/')
     .get(catchAsync(journalController.renderAllJournalsPage))
-    .post(validateJournal, catchAsync(journalController.createNewJournal))
+    .post(isLoggedIn, validateJournal, catchAsync(journalController.createNewJournal))
 
 router.route('/new')
-    .get(journalController.renderNewJournalPage)
+    .get(isLoggedIn, journalController.renderNewJournalPage)
 
 router.route('/:id')
     .get(catchAsync(journalController.renderJournalDetail))
-    .put(validateJournal, catchAsync(journalController.updateJournal))
-    .delete(catchAsync(journalController.deleteJournal))
+    .put(isLoggedIn, validateJournal, catchAsync(journalController.updateJournal))
+    .delete(isLoggedIn, catchAsync(journalController.deleteJournal))
 
 router.route('/:id/edit')
-    .get(catchAsync(journalController.renderEditJournalPage))
+    .get(isLoggedIn, catchAsync(journalController.renderEditJournalPage))
 
 module.exports = router

@@ -5,14 +5,15 @@ const router = express.Router({
 const catchAsync = require('../utils/catchAsync')
 const reviewController = require('../controllers/reviews')
 const {
-    validateReview
+    validateReview,
+    isLoggedIn
 } = require('../middleware')
 
 
 router.route('/')
-    .post(validateReview, catchAsync(reviewController.createNewReview))
+    .post(isLoggedIn, validateReview, catchAsync(reviewController.createNewReview))
 
 router.route('/:reviewId')
-    .delete(catchAsync(reviewController.deleteReview))
+    .delete(isLoggedIn, catchAsync(reviewController.deleteReview))
 
 module.exports = router
