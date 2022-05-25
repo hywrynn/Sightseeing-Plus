@@ -4,7 +4,8 @@ const journalController = require('../controllers/journals')
 const catchAsync = require('../utils/catchAsync')
 const {
     validateJournal,
-    isLoggedIn
+    isLoggedIn,
+    isJournalAuthor
 } = require('../middleware')
 
 
@@ -17,10 +18,10 @@ router.route('/new')
 
 router.route('/:id')
     .get(catchAsync(journalController.renderJournalDetail))
-    .put(isLoggedIn, validateJournal, catchAsync(journalController.updateJournal))
-    .delete(isLoggedIn, catchAsync(journalController.deleteJournal))
+    .put(isLoggedIn, isJournalAuthor, validateJournal, catchAsync(journalController.updateJournal))
+    .delete(isLoggedIn, isJournalAuthor, catchAsync(journalController.deleteJournal))
 
 router.route('/:id/edit')
-    .get(isLoggedIn, catchAsync(journalController.renderEditJournalPage))
+    .get(isLoggedIn, isJournalAuthor, catchAsync(journalController.renderEditJournalPage))
 
 module.exports = router

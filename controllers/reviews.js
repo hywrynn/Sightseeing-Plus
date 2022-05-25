@@ -5,6 +5,7 @@ const Review = require('../models/review')
 const createNewReview = async (req, res) => {
     const journal = await Journal.findById(req.params.journalId)
     const review = new Review(req.body.review)
+    review.author = req.user._id
     journal.reviews.push(review)
     await review.save()
     await journal.save()

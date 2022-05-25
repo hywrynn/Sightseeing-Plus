@@ -14,13 +14,19 @@ const renderNewJournalPage = (req, res) => {
 
 const createNewJournal = async (req, res) => {
     const journal = new Journal(req.body.journal)
+    journal.author = req.user._id
     await journal.save()
     req.flash('success', 'Journal added successfully!')
     res.redirect(`/journals/${journal._id}`)
 }
 
 const renderJournalDetail = async (req, res) => {
-    const journal = await Journal.findById(req.params.id).populate('reviews')
+    const journal = await Journal.findById(req.params.id).populate({
+        path: 'reviews',
+        populate: {
+            path: 'author'
+        }
+    }).populate('author')
     if (!journal) {
         req.flash('error', 'No journal found!')
         return res.redirect('/journals')
