@@ -19,7 +19,7 @@ const createNewJournal = async (req, res) => {
 }
 
 const renderJournalDetail = async (req, res) => {
-    const journal = await Journal.findById(req.params.id)
+    const journal = await Journal.findById(req.params.id).populate('reviews')
     res.render('journals/show', {
         journal
     })

@@ -9,6 +9,7 @@ const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 
 const journalRouter = require('./routers/journals')
+const reviewRouter = require('./routers/reviews')
 const ExpressError = require('./utils/ExpressError')
 
 
@@ -43,6 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 // routes
 app.use('/journals', journalRouter)
+app.use('/journals/:journalId/reviews', reviewRouter)
 
 // home page route
 app.get('/', (req, res) => {
