@@ -2,6 +2,11 @@ const Journal = require('../models/journal')
 const {
     cloudinary
 } = require('../cloudinary/index')
+const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding")
+const mapBoxToken = process.env.MAPBOX_TOKEN
+const geocoder = mbxGeocoding({
+    accessToken: mapBoxToken
+})
 
 
 const renderAllJournalsPage = async (req, res) => {
@@ -16,7 +21,12 @@ const renderNewJournalPage = (req, res) => {
 }
 
 const createNewJournal = async (req, res) => {
+    const geoData = await geocoder.forwardGeocode({
+        query: req.body.journal.location,
+        limit: 1
+    }).send()
     const journal = new Journal(req.body.journal)
+    journal.geometry = geoData.body.features[0].geometry
     journal.images = req.files.map(f => ({
         url: f.path,
         filename: f.filename
@@ -63,6 +73,13 @@ const updateJournal = async (req, res) => {
         filename: f.filename
     }))
     journal.images.push(...imgs)
+
+    const geoData = await geocoder.forwardGeocode({
+        query: req.body.journal.location,
+        limit: 1
+    }).send()
+    journal.geometry = geoData.body.features[0].geometry
+
     await journal.save();
     if (req.body.deleteImages) {
         for (let filename of req.body.deleteImages) {
