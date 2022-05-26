@@ -11,6 +11,7 @@ const session = require('express-session')
 const flash = require('connect-flash')
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
+const mongoSanitize = require('express-mongo-sanitize')
 
 const journalRouter = require('./routers/journals')
 const reviewRouter = require('./routers/reviews')
@@ -48,8 +49,14 @@ app.use(methodOverride('_method'))
 // set path for public
 app.use(express.static(path.join(__dirname, 'public')))
 
+// replace prohibited characters with _
+app.use(mongoSanitize({
+    replaceWith: '_'
+}))
+
 // sessions
 const sessionConfig = {
+    name: 'session',
     secret: 'ASecretToken',
     resave: false,
     saveUninitialized: true,
