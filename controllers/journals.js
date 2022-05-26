@@ -1,4 +1,7 @@
 const Journal = require('../models/journal')
+const {
+    cloudinary
+} = require('../cloudinary/index')
 
 
 const renderAllJournalsPage = async (req, res) => {
@@ -14,6 +17,10 @@ const renderNewJournalPage = (req, res) => {
 
 const createNewJournal = async (req, res) => {
     const journal = new Journal(req.body.journal)
+    journal.images = req.files.map(f => ({
+        url: f.path,
+        filename: f.filename
+    }))
     journal.author = req.user._id
     await journal.save()
     req.flash('success', 'Journal added successfully!')
@@ -51,6 +58,26 @@ const updateJournal = async (req, res) => {
     const journal = await Journal.findByIdAndUpdate(req.params.id, {
         ...req.body.journal
     })
+    const imgs = req.files.map(f => ({
+        url: f.path,
+        filename: f.filename
+    }))
+    journal.images.push(...imgs)
+    await journal.save();
+    if (req.body.deleteImages) {
+        for (let filename of req.body.deleteImages) {
+            await cloudinary.uploader.destroy(filename);
+        }
+        await journal.updateOne({
+            $pull: {
+                images: {
+                    filename: {
+                        $in: req.body.deleteImages
+                    }
+                }
+            }
+        })
+    }
     req.flash('success', 'Journal updated successfully!')
     res.redirect(`/journals/${journal._id}`)
 }

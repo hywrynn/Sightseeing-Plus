@@ -4,7 +4,12 @@
     <div class="card" mb-3>
         <div class="row">
             <div class="col-md-4">
-                <img class="img-fluid" alt="" src="<%=journal.image%>">
+                <%if (journal.images.length) {%>
+                <img class="img-fluid" alt="" src="<%=journal.images[0].url%>">
+                <% } else {%>
+                <img class="img-fluid" alt=""
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png">
+                <% } %>
             </div>
             <div class="col-md-8">
                 <div class="card-body">

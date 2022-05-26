@@ -7,18 +7,25 @@ const {
     isLoggedIn,
     isJournalAuthor
 } = require('../middleware')
+const multer = require('multer')
+const {
+    storage
+} = require('../cloudinary')
+const upload = multer({
+    storage
+})
 
 
 router.route('/')
     .get(catchAsync(journalController.renderAllJournalsPage))
-    .post(isLoggedIn, validateJournal, catchAsync(journalController.createNewJournal))
+    .post(isLoggedIn, upload.array('image'), validateJournal, catchAsync(journalController.createNewJournal))
 
 router.route('/new')
     .get(isLoggedIn, journalController.renderNewJournalPage)
 
 router.route('/:id')
     .get(catchAsync(journalController.renderJournalDetail))
-    .put(isLoggedIn, isJournalAuthor, validateJournal, catchAsync(journalController.updateJournal))
+    .put(isLoggedIn, isJournalAuthor, upload.array('image'), validateJournal, catchAsync(journalController.updateJournal))
     .delete(isLoggedIn, isJournalAuthor, catchAsync(journalController.deleteJournal))
 
 router.route('/:id/edit')
