@@ -12,6 +12,7 @@ const flash = require('connect-flash')
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const mongoSanitize = require('express-mongo-sanitize')
+const MongoStore = require("connect-mongo")
 
 const journalRouter = require('./routers/journals')
 const reviewRouter = require('./routers/reviews')
@@ -54,10 +55,21 @@ app.use(mongoSanitize({
     replaceWith: '_'
 }))
 
-// sessions
+// store sessions in Mongo
+const secret = process.env.SECRET
+
+const store = MongoStore.create({
+    mongoUrl: MONGO_URI,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: secret
+    }
+})
+
 const sessionConfig = {
+    store,
     name: 'session',
-    secret: 'ASecretToken',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
