@@ -5,6 +5,7 @@ const {
 const ExpressError = require('./utils/ExpressError')
 const Journal = require('./models/journal')
 const Review = require('./models/review')
+const Code = require('./models/codes')
 
 
 module.exports.validateJournal = (req, res, next) => {
@@ -62,5 +63,21 @@ module.exports.isReviewAuthor = async (req, res, next) => {
         req.flash('error', 'Sorry, you do not have permission.')
         return res.redirect(`/journals/${journalId}`)
     }
+    next()
+}
+
+module.exports.isInvited = async (req, res, next) => {
+    const {
+        token
+    } = req.body
+    const code = await Code.findOne({
+        token: token
+    })
+    if (!code || code.used) {
+        req.flash('error', 'Invalid invitation code.')
+        return res.redirect('/register')
+    }
+    code.used = true
+    await code.save()
     next()
 }
