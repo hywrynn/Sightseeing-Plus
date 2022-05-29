@@ -35,3 +35,11 @@ body {
     color: #333;
     text-shadow: none;
 }
+
+.footer-link {
+    text-decoration: none
+}
+
+.footer-link:hover {
+    text-decoration: underline;
+}
