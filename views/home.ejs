@@ -17,9 +17,12 @@
                 <nav class="nav nav-masthead justify-content-center float-md-end">
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                     <a class="nav-link" href="/journals">Journals</a>
+                    <% if (!currentUser) { %>
                     <a class="nav-link" href="/login">Login</a>
                     <a class="nav-link" href="/register">Register</a>
+                    <% } else { %>
                     <a class="nav-link" href="/logout">Logout</a>
+                    <% } %>
                 </nav>
             </div>
         </header>
@@ -33,6 +36,7 @@
 
         <footer class="mt-auto text-white-50">
             <p class="float-md-start mb-0">&copy; Sightseeing Plus 2022 </p>
+            <a href="https://github.com/hywrynn/Sightseeing-Plus" class="link-secondary float-md-end">GitHub</a>
         </footer>
 
 
