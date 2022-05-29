@@ -4,6 +4,7 @@
   "description": "Sightseeing Plus is a full-stack web application built from scratch. It is a website which allows users to share and review sightseeing locations, leave comments, post travel journals, and etc.",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
