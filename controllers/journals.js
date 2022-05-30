@@ -100,7 +100,16 @@ const updateJournal = async (req, res) => {
 }
 
 const deleteJournal = async (req, res) => {
-    await Journal.findByIdAndDelete(req.params.id)
+    const journal = await Journal.findById(req.params.id)
+
+    // delete related images in cloudinary
+    if (journal.images) {
+        for (let img of journal.images) {
+            await cloudinary.uploader.destroy(img.filename)
+        }
+    }
+
+    await Journal.deleteOne(journal._id)
     req.flash('success', 'Journal deleted successfully!')
     res.redirect('/journals')
 }
